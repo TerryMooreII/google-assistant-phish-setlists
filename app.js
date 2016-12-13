@@ -37,7 +37,7 @@ app.post('/', function (req, res) {
         .replace(/\[[^>]*\]/g, ' ')
         .replace(/<[^>]*>/g, ' ')
         .replace(/>/g, ' into ')
-        .replace(/Set [^]|Encore:*/gi, match => `<break time="3s"/> ${match} <break time="3s"/>`);
+        .replace(/Set [^]|Encore:*/gi, match => `<break time="500ms"/> ${match} <break time="1s"/>`);
 
      console.log(data[0].shownotes)
 
