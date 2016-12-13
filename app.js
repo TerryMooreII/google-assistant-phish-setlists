@@ -5,6 +5,11 @@ process.env.DEBUG = 'actions-on-google:*';
 let Assistant = require('actions-on-google').ApiAiAssistant;
 let express = require('express');
 let bodyParser = require('body-parser');
+var pnet = require('pnet');
+
+const PHISH_NET_API_KEY = 'CEE681B57889948C24DE';
+const PHISH_API = 'http://api.phish.net/';
+pnet.apikey(PHISH_NET_API_KEY);
 
 let app = express();
 app.use(bodyParser.json({type: 'application/json'}));
@@ -12,16 +17,20 @@ app.use(bodyParser.json({type: 'application/json'}));
 // [START YourAction]
 app.post('/', function (req, res) {
   const assistant = new Assistant({request: req, response: res});
-  console.log('Request headers: ' + JSON.stringify(req.headers));
-  console.log('Request body: ' + JSON.stringify(req.body));
 
-  // Fulfill action business logic
-  function responseHandler (assistant) {
-    // Complete your fulfillment logic and send a response
-    assistant.tell('Hello, World!');
-  }
+  pnet.get('pnet.shows.setlists.latest', function(err, url, parsedJSONResource){
+    // Fulfill action business logic
+    console.log(parsedJSONResource);
+    
+    function responseHandler (assistant) {
+      // Complete your fulfillment logic and send a response
+      assistant.tell('Hello, World!');
+    }
 
-  assistant.handleRequest(responseHandler);
+    assistant.handleRequest(responseHandler);
+  });
+
+
 });
 // [END YourAction]
 
