@@ -37,9 +37,9 @@ app.post('/', function (req, res) {
         .replace(/\[[^>]*\]/g, ' ')
         .replace(/<[^>]*>/g, ' ')
         .replace(/>/g, ' into ')
-        .replace(/Set [^]|Encore:*/gi, match => `${match} \n`);
-        
-     console.log(setlist)
+        .replace(/Set [^]|Encore:*/gi, match => `<break time="3s"/> ${match} <break time="3s"/>`);
+
+     console.log(data[0].shownotes)
 
      function responseHandler (assistant) {
        // Complete your fulfillment logic and send a response
