@@ -22,7 +22,7 @@ app.post('/', function (req, res) {
   const assistant = new Assistant({request: req, response: res});
 
     pnet.shows.setlists.latest({}, function(err, data) {
-        
+
         /*
         showdate: '2016-10-31',
      showyear: '2016',
@@ -33,10 +33,12 @@ app.post('/', function (req, res) {
      */
      var venue = data[0].venue;
      var date = data[0].showdate;
+     var setlist = data[0].setlistdata.replace(/<[^>]*>/g, '').replace(/>/g, 'into');
+     console.log(setlist)
 
      function responseHandler (assistant) {
        // Complete your fulfillment logic and send a response
-       assistant.tell(`The last show was at ${venue} on ${date}`);
+       assistant.tell(`The last show was at ${venue} on ${date}.  The setlist is ${setlist}`);
      }
 
      assistant.handleRequest(responseHandler);
