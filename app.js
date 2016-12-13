@@ -33,7 +33,7 @@ app.post('/', function (req, res) {
      */
      var venue = data[0].venue;
      var date = data[0].showdate;
-     var setlist = data[0].setlistdata.replace(/<[^>]*>/g, '').replace(/\[[^>]*\]/g, '').replace(/>/g, 'into');
+     var setlist = data[0].setlistdata.replace(/<[^>]*>/g, ' ').replace(/\[[^>]*\]/g, ' ').replace(/>/g, ' into ');
      console.log(setlist)
 
      function responseHandler (assistant) {
