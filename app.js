@@ -43,7 +43,7 @@ app.post('/', function (req, res) {
 
      function responseHandler (assistant) {
        // Complete your fulfillment logic and send a response
-       assistant.tell(`The last show was at ${venue} on ${date}.  The setlist is ${setlist}`);
+       assistant.tell(`<speak>The last show was at ${venue} on ${date}.  The setlist is ${setlist}</speak>`);
      }
 
      assistant.handleRequest(responseHandler);
