@@ -37,13 +37,13 @@ app.post('/', function (req, res) {
         .replace(/\[[^>]*\]/g, ' ')
         .replace(/<[^>]*>/g, ' ')
         .replace(/>/g, ' into ')
-        .replace(/Set [^]|Encore:*/gi, match => `<break time="500ms"/> ${match} <break time="1s"/>`);
+        .replace(/Set [^]|Encore:*/gi, match => `<break time="250ms"/> ${match} <break time="500ms"/>`);
 
      console.log(data[0].shownotes)
 
      function responseHandler (assistant) {
        // Complete your fulfillment logic and send a response
-       assistant.tell(`<speak>The last show was at ${venue} on ${date}.  The setlist is ${setlist}</speak>`);
+       assistant.tell(`<speak>The last show was at ${venue} on ${date}. ${setlist}</speak>`);
      }
 
      assistant.handleRequest(responseHandler);
