@@ -41,9 +41,9 @@ app.post('/', function(req, res) {
     }
 
     function getUpcoming() {
-      console.log('aslkdjfalskdjfalks;djflka;sdjf;laskdjf;l');
+        assistant.ask(`<speak>Sorry this isn't working right now, check back soon.</speak>`, NO_INPUT_PROMPTS);
+        return;
         pnet.shows.upcoming({}, function(err, data) {
-            console.log(data);
             assistant.tell('upcoming');
             //assistant.ask(`<speak>The last show was at ${info.venue} on ${info.date}. ${info.setlist}</speak>`, NO_INPUT_PROMPTS);
         });
