@@ -51,7 +51,7 @@ app.post('/', function(req, res) {
         var date = assistant.getArgument(ARGUMENT_DATE);
         console.log('date', date);
         var {year, month, day} = date.split('-');
-        consle.log(year);
+        console.log(year);
         pnet.shows.query({year, month, day}, function(err, data) {
             // var venue = data[0].venue;
             // var date = data[0].showdate;
