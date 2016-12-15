@@ -49,12 +49,11 @@ app.post('/', function(req, res) {
 
     function getSpecificDate() {
         var date = assistant.getArgument(ARGUMENT_DATE);
-        console.log('date', date);
         var [year, month, day] = date.split('-');
-        console.log(year);
-        var params = {year, month, day};
-        console.log(params);
-        pnet.shows.query(params, function(err, data) {
+
+        pnet.shows.query({year, month, day}, function(err, data) {
+          console.log(err);
+          console.log(data);
             // var venue = data[0].venue;
             // var date = data[0].showdate;
             // var setlist = data[0].setlistdata
@@ -65,7 +64,7 @@ app.post('/', function(req, res) {
             //     .toLowerCase();
             //
             // assistant.tell(`<speak>The last show was at ${venue} on ${date}. ${setlist}</speak>`);
-            console.log(data);
+          
             assistant.tell('yo');
         });
     }
