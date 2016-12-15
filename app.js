@@ -12,6 +12,7 @@ const ACTION_LATEST = 'latest';
 const ACTION_SPECIFIC_DATE = 'specific_date';
 
 const ARGUMENT_DATE = 'date';
+const NO_INPUT_PROMPTS = 'I didn\'t hear you over all that jamming! ';
 
 
 let app = express();
@@ -43,19 +44,19 @@ app.post('/', function(req, res) {
         pnet.shows.setlists.latest({}, function(err, data) {
             var info = parseSetlist(data[0]);
 
-            assistant.tell(`<speak>The last show was at ${info.venue} on ${info.date}. ${info.setlist}</speak>`);
+            assistant.ask(`<speak>The last show was at ${info.venue} on ${info.date}. ${info.setlist}</speak>`, NO_INPUT_PROMPTS);
         });
     }
 
     function getSpecificDate() {
         var date = assistant.getArgument(ARGUMENT_DATE);
-        
+
         pnet.shows.setlists.get({showdate: date}, function(err, data) {
             if (data && data.length > 0){
               var info = parseSetlist(data[0]);
-              assistant.tell(`<speak>On ${info.date} Phish played at ${info.venue}. The setlist was, ${info.setlist}</speak>`);
+              assistant.ask(`<speak>On ${info.date} Phish played at ${info.venue}. The setlist was, ${info.setlist}</speak>`, NO_INPUT_PROMPTS);
             }else{
-              assistant.tell(`<speak>There wasn\'t as show on ${date}</speak>`);
+              assistant.ask(`<speak>There wasn\'t as show on ${date}</speak>`, NO_INPUT_PROMPTS);
             }
         });
     }
