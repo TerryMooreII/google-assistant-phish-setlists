@@ -41,6 +41,7 @@ app.post('/', function(req, res) {
     }
 
     function getUpcoming() {
+      console.log('aslkdjfalskdjfalks;djflka;sdjf;laskdjf;l');
         pnet.shows.upcoming({}, function(err, data) {
             console.log(data);
             assistant.tell('upcoming');
