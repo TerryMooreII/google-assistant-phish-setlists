@@ -12,7 +12,7 @@ const ACTION_LATEST = 'latest';
 const ACTION_SPECIFIC_DATE = 'specific_date';
 
 const ARGUMENT_DATE = 'date';
-const NO_INPUT_PROMPTS = 'I didn\'t hear you over all that jamming! ';
+const NO_INPUT_PROMPTS = ['I didn\'t hear you over all that jamming!'];
 
 
 let app = express();
