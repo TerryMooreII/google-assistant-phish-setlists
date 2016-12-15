@@ -41,7 +41,7 @@ app.post('/', function(req, res) {
     }
 
     function getUpcoming() {
-        pnet.shows.setlists.upcoming({}, function(err, data) {
+        pnet.shows.upcoming({}, function(err, data) {
             console.log(data);
             assistant.tell('upcoming');
             //assistant.ask(`<speak>The last show was at ${info.venue} on ${info.date}. ${info.setlist}</speak>`, NO_INPUT_PROMPTS);
