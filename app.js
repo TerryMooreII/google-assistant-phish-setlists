@@ -46,7 +46,7 @@ app.post('/', function(req, res) {
         var date = assistant.getArgument(ARGUMENT_DATE);
 
 
-        pnet.shows.setlists.get(date, function(err, data) {
+        pnet.shows.setlists.get({showdate: date}, function(err, data) {
           console.log(err);
           console.log(data);
             // var venue = data[0].venue;
