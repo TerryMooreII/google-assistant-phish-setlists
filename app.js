@@ -2,55 +2,51 @@
 'use strict';
 
 process.env.DEBUG = 'actions-on-google:*';
-let Assistant = require('actions-on-google').ApiAiAssistant;
-let express = require('express');
-let bodyParser = require('body-parser');
-//var pnet = require('pnet');
-
+const Assistant = require('actions-on-google').ApiAiAssistant;
+const express = require('express');
+const bodyParser = require('body-parser');
+const Taboot = require('taboot');
 const PHISH_NET_API_KEY = 'CEE681B57889948C24DE';
 const PHISH_API = 'http://api.phish.net/';
-//pnet.apikey(PHISH_NET_API_KEY);
+const pnet = new Taboot(PHISH_NET_API_KEY).pnet
 
-var Taboot = require('taboot');
-var pnet = new Taboot(PHISH_NET_API_KEY).pnet
+const ACTION_LATEST = 'latest';
+
 
 let app = express();
 app.use(bodyParser.json({type: 'application/json'}));
 
 // [START YourAction]
 app.post('/', function (req, res) {
-  const assistant = new Assistant({request: req, response: res});
+    const assistant = new Assistant({request: req, response: res});
 
-    pnet.shows.setlists.latest({}, function(err, data) {
+    function latest(){
+      pnet.shows.setlists.latest({}, function(err, data) {
 
-        /*
-        showdate: '2016-10-31',
-     showyear: '2016',
-     city: 'Las Vegas',
-     state: 'NV',
-     country: 'USA',
-     venue: 'MGM Grand Garden Arena',
-     */
-     var venue = data[0].venue;
-     var date = data[0].showdate;
-     var setlist = data[0].setlistdata
-        .replace(/\[[^>]*\]/g, ' ')
-        .replace(/<[^>]*>/g, ' ')
-        .replace(/>/g, ' into ')
-        .replace(/Set [^]|Encore:*/gi, match => `<break time="250ms"/> ${match} <break time="500ms"/>`)
-        .toLowerCase();
+       var venue = data[0].venue;
+       var date = data[0].showdate;
+       var setlist = data[0].setlistdata
+          .replace(/\[[^>]*\]/g, ' ')
+          .replace(/<[^>]*>/g, ' ')
+          .replace(/>/g, ' into ')
+          .replace(/Set [^]|Encore:*/gi, match => `<break time="250ms"/> ${match} <break time="500ms"/>`)
+          .toLowerCase();
 
-     console.log(data[0].shownotes)
+       console.log(data[0].shownotes)
 
-     function responseHandler (assistant) {
-       // Complete your fulfillment logic and send a response
-       assistant.tell(`<speak>The last show was at ${venue} on ${date}. ${setlist}</speak>`);
+       function responseHandler (assistant) {
+         // Complete your fulfillment logic and send a response
+         assistant.tell(`<speak>The last show was at ${venue} on ${date}. ${setlist}</speak>`);
+       }
+
+       assistant.handleRequest(responseHandler);
+
+       });
      }
 
-     assistant.handleRequest(responseHandler);
 
-     });
-
+     let actionMap = new Map();
+     actionMap.set(ACTION_LATEST, getLatest);
 
 });
 // [END YourAction]
