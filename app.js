@@ -52,7 +52,9 @@ app.post('/', function(req, res) {
         console.log('date', date);
         var [year, month, day] = date.split('-');
         console.log(year);
-        pnet.shows.query({year, month, day}, function(err, data) {
+        var params = {year, month, day};
+        console.log(params);
+        pnet.shows.query(params, function(err, data) {
             // var venue = data[0].venue;
             // var date = data[0].showdate;
             // var setlist = data[0].setlistdata
