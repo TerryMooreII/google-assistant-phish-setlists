@@ -19,6 +19,11 @@ app.use(bodyParser.json({
 
 // [START YourAction]
 app.post('/', function(req, res) {
+
+    console.log('headers: ' + JSON.stringify(request.headers));
+    console.log('body: ' + JSON.stringify(request.body));
+
+    
     const assistant = new Assistant({
         request: req,
         response: res
@@ -36,9 +41,7 @@ app.post('/', function(req, res) {
                 .replace(/Set [^]|Encore:*/gi, match => `<break time="250ms"/> ${match} <break time="500ms"/>`)
                 .toLowerCase();
 
-        
-
-              assistant.tell(`<speak>The last show was at ${venue} on ${date}. ${setlist}</speak>`);
+            assistant.tell(`<speak>The last show was at ${venue} on ${date}. ${setlist}</speak>`);
 
         });
     }
