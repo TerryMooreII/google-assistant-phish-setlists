@@ -63,7 +63,6 @@ app.post('/', function(req, res) {
 
             assistant.tell(`<speak>The last show was at ${venue} on ${date}. ${setlist}</speak>`);
         });
-        assistant.tell(date);
     }
 
     let actionMap = new Map();
