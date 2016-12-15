@@ -10,6 +10,9 @@ const PHISH_API = 'http://api.phish.net/';
 const pnet = new Taboot(PHISH_NET_API_KEY).pnet
 
 const ACTION_LATEST = 'latest';
+const ACTION_SPECIFIC_DATE = 'specific_date';
+
+const ARGUMENT_DATE = 'date';
 
 
 let app = express();
@@ -31,7 +34,6 @@ app.post('/', function(req, res) {
 
     function getLatest() {
         pnet.shows.setlists.latest({}, function(err, data) {
-
             var venue = data[0].venue;
             var date = data[0].showdate;
             var setlist = data[0].setlistdata
@@ -42,13 +44,30 @@ app.post('/', function(req, res) {
                 .toLowerCase();
 
             assistant.tell(`<speak>The last show was at ${venue} on ${date}. ${setlist}</speak>`);
-
         });
     }
 
+    function getSpecificDate(){
+      var date = assistant.getArgument(ARGUMENT_DATE);
+      console.log('date', date);
+      // pnet.shows.setlists.query({}, function(err, data) {
+      //     var venue = data[0].venue;
+      //     var date = data[0].showdate;
+      //     var setlist = data[0].setlistdata
+      //         .replace(/\[[^>]*\]/g, ' ')
+      //         .replace(/<[^>]*>/g, ' ')
+      //         .replace(/>/g, ' into ')
+      //         .replace(/Set [^]|Encore:*/gi, match => `<break time="250ms"/> ${match} <break time="500ms"/>`)
+      //         .toLowerCase();
+      //
+      //     assistant.tell(`<speak>The last show was at ${venue} on ${date}. ${setlist}</speak>`);
+      // });
+      assistant.tell(date);
+    }
 
     let actionMap = new Map();
     actionMap.set(ACTION_LATEST, getLatest);
+    actionMap.set(ACTION_SPECIFIC_DATE, getSpecificDate);
 
     assistant.handleRequest(actionMap);
 
