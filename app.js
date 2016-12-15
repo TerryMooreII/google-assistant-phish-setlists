@@ -23,13 +23,13 @@ app.post('/', function(req, res) {
     console.log('headers: ' + JSON.stringify(request.headers));
     console.log('body: ' + JSON.stringify(request.body));
 
-    
+
     const assistant = new Assistant({
         request: req,
         response: res
     });
 
-    function latest() {
+    function getLatest() {
         pnet.shows.setlists.latest({}, function(err, data) {
 
             var venue = data[0].venue;
