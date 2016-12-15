@@ -22,11 +22,6 @@ app.use(bodyParser.json({
 
 // [START YourAction]
 app.post('/', function(req, res) {
-
-    console.log('headers: ' + JSON.stringify(req.headers));
-    console.log('body: ' + JSON.stringify(req.body));
-
-
     const assistant = new Assistant({
         request: req,
         response: res
@@ -49,9 +44,9 @@ app.post('/', function(req, res) {
 
     function getSpecificDate() {
         var date = assistant.getArgument(ARGUMENT_DATE);
-        var [year, month, day] = date.split('-');
 
-        pnet.shows.query({year, month, day}, function(err, data) {
+
+        pnet.shows.setlists.get(date, function(err, data) {
           console.log(err);
           console.log(data);
             // var venue = data[0].venue;
@@ -64,7 +59,7 @@ app.post('/', function(req, res) {
             //     .toLowerCase();
             //
             // assistant.tell(`<speak>The last show was at ${venue} on ${date}. ${setlist}</speak>`);
-          
+
             assistant.tell('yo');
         });
     }
