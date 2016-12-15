@@ -1,4 +1,3 @@
-
 'use strict';
 
 process.env.DEBUG = 'actions-on-google:*';
@@ -14,51 +13,53 @@ const ACTION_LATEST = 'latest';
 
 
 let app = express();
-app.use(bodyParser.json({type: 'application/json'}));
+app.use(bodyParser.json({
+    type: 'application/json'
+}));
 
 // [START YourAction]
-app.post('/', function (req, res) {
-    const assistant = new Assistant({request: req, response: res});
+app.post('/', function(req, res) {
+    const assistant = new Assistant({
+        request: req,
+        response: res
+    });
 
-    function latest(){
-      pnet.shows.setlists.latest({}, function(err, data) {
+    function latest() {
+        pnet.shows.setlists.latest({}, function(err, data) {
 
-       var venue = data[0].venue;
-       var date = data[0].showdate;
-       var setlist = data[0].setlistdata
-          .replace(/\[[^>]*\]/g, ' ')
-          .replace(/<[^>]*>/g, ' ')
-          .replace(/>/g, ' into ')
-          .replace(/Set [^]|Encore:*/gi, match => `<break time="250ms"/> ${match} <break time="500ms"/>`)
-          .toLowerCase();
+            var venue = data[0].venue;
+            var date = data[0].showdate;
+            var setlist = data[0].setlistdata
+                .replace(/\[[^>]*\]/g, ' ')
+                .replace(/<[^>]*>/g, ' ')
+                .replace(/>/g, ' into ')
+                .replace(/Set [^]|Encore:*/gi, match => `<break time="250ms"/> ${match} <break time="500ms"/>`)
+                .toLowerCase();
 
-       console.log(data[0].shownotes)
+        
 
-       function responseHandler (assistant) {
-         // Complete your fulfillment logic and send a response
-         assistant.tell(`<speak>The last show was at ${venue} on ${date}. ${setlist}</speak>`);
-       }
+              assistant.tell(`<speak>The last show was at ${venue} on ${date}. ${setlist}</speak>`);
 
-       assistant.handleRequest(responseHandler);
-
-       });
-     }
+        });
+    }
 
 
-     let actionMap = new Map();
-     actionMap.set(ACTION_LATEST, getLatest);
+    let actionMap = new Map();
+    actionMap.set(ACTION_LATEST, getLatest);
+
+    assistant.handleRequest(actionMap);
 
 });
 // [END YourAction]
 
 if (module === require.main) {
-  // [START server]
-  // Start the server
-  let server = app.listen(process.env.PORT || 8080, function () {
-    let port = server.address().port;
-    console.log('App listening on port %s', port);
-  });
-  // [END server]
+    // [START server]
+    // Start the server
+    let server = app.listen(process.env.PORT || 8080, function() {
+        let port = server.address().port;
+        console.log('App listening on port %s', port);
+    });
+    // [END server]
 }
 
 module.exports = app;
