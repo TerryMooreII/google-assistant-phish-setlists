@@ -10,6 +10,7 @@ const pnet = new Taboot(PHISH_NET_API_KEY).pnet
 
 const ACTION_LATEST = 'latest';
 const ACTION_SPECIFIC_DATE = 'specific_date';
+const ACTION_UPCOMING = 'upcoming';
 
 const ARGUMENT_DATE = 'date';
 const NO_INPUT_PROMPTS = ['I didn\'t hear you over all that jamming!'];
@@ -39,6 +40,13 @@ app.post('/', function(req, res) {
       return {venue, date, setlist};
     }
 
+    function getUpcoming() {
+        pnet.shows.setlists.upcoming({}, function(err, data) {
+            console.log(data);
+            assistant.tell('upcoming');
+            //assistant.ask(`<speak>The last show was at ${info.venue} on ${info.date}. ${info.setlist}</speak>`, NO_INPUT_PROMPTS);
+        });
+    }
 
     function getLatest() {
         pnet.shows.setlists.latest({}, function(err, data) {
@@ -64,6 +72,7 @@ app.post('/', function(req, res) {
     let actionMap = new Map();
     actionMap.set(ACTION_LATEST, getLatest);
     actionMap.set(ACTION_SPECIFIC_DATE, getSpecificDate);
+    actionMap.set(ACTION_SPECIFIC_DATE, getUpcoming);
 
     assistant.handleRequest(actionMap);
 
