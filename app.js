@@ -20,8 +20,8 @@ app.use(bodyParser.json({
 // [START YourAction]
 app.post('/', function(req, res) {
 
-    console.log('headers: ' + JSON.stringify(request.headers));
-    console.log('body: ' + JSON.stringify(request.body));
+    console.log('headers: ' + JSON.stringify(req.headers));
+    console.log('body: ' + JSON.stringify(req.body));
 
 
     const assistant = new Assistant({
