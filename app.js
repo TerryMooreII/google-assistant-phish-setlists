@@ -5,8 +5,7 @@ const Assistant = require('actions-on-google').ApiAiAssistant;
 const express = require('express');
 const bodyParser = require('body-parser');
 const Taboot = require('taboot');
-const PHISH_NET_API_KEY = 'CEE681B57889948C24DE';
-const PHISH_API = 'http://api.phish.net/';
+const PHISH_NET_API_KEY = 'E190885C650781765737';
 const pnet = new Taboot(PHISH_NET_API_KEY).pnet
 
 const ACTION_LATEST = 'latest';
@@ -27,40 +26,37 @@ app.post('/', function(req, res) {
         response: res
     });
 
+    function parseSetlist(data){
+      var venue = data.venue;
+      var date = data.showdate;
+      var setlist = data.setlistdata
+          .replace(/\[[^>]*\]/g, ' ')
+          .replace(/<[^>]*>/g, ' ')
+          .replace(/>/g, ' into ')
+          .replace(/Set [^]|Encore:*/gi, match => `<break time="250ms"/> ${match} <break time="500ms"/>`)
+          .toLowerCase();
+      return {venue, date, setlist};
+    }
+
+
     function getLatest() {
         pnet.shows.setlists.latest({}, function(err, data) {
-            var venue = data[0].venue;
-            var date = data[0].showdate;
-            var setlist = data[0].setlistdata
-                .replace(/\[[^>]*\]/g, ' ')
-                .replace(/<[^>]*>/g, ' ')
-                .replace(/>/g, ' into ')
-                .replace(/Set [^]|Encore:*/gi, match => `<break time="250ms"/> ${match} <break time="500ms"/>`)
-                .toLowerCase();
+            var info = parseSetlist(data[0]);
 
-            assistant.tell(`<speak>The last show was at ${venue} on ${date}. ${setlist}</speak>`);
+            assistant.tell(`<speak>The last show was at ${info.venue} on ${info.date}. ${info.setlist}</speak>`);
         });
     }
 
     function getSpecificDate() {
         var date = assistant.getArgument(ARGUMENT_DATE);
-
-
+        
         pnet.shows.setlists.get({showdate: date}, function(err, data) {
-          console.log(err);
-          console.log(data);
-            // var venue = data[0].venue;
-            // var date = data[0].showdate;
-            // var setlist = data[0].setlistdata
-            //     .replace(/\[[^>]*\]/g, ' ')
-            //     .replace(/<[^>]*>/g, ' ')
-            //     .replace(/>/g, ' into ')
-            //     .replace(/Set [^]|Encore:*/gi, match => `<break time="250ms"/> ${match} <break time="500ms"/>`)
-            //     .toLowerCase();
-            //
-            // assistant.tell(`<speak>The last show was at ${venue} on ${date}. ${setlist}</speak>`);
-
-            assistant.tell('yo');
+            if (data && data.length > 0){
+              var info = parseSetlist(data[0]);
+              assistant.tell(`<speak>On ${info.date} Phish played at ${info.venue}. The setlist was, ${info.setlist}</speak>`);
+            }else{
+              assistant.tell(`<speak>There wasn\'t as show on ${date}</speak>`);
+            }
         });
     }
 
