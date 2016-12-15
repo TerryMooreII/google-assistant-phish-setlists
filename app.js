@@ -50,7 +50,7 @@ app.post('/', function(req, res) {
     function getSpecificDate() {
         var date = assistant.getArgument(ARGUMENT_DATE);
         console.log('date', date);
-        var {year, month, day} = date.split('-');
+        var [year, month, day] = date.split('-');
         console.log(year);
         pnet.shows.query({year, month, day}, function(err, data) {
             // var venue = data[0].venue;
