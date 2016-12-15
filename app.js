@@ -72,7 +72,7 @@ app.post('/', function(req, res) {
     let actionMap = new Map();
     actionMap.set(ACTION_LATEST, getLatest);
     actionMap.set(ACTION_SPECIFIC_DATE, getSpecificDate);
-    actionMap.set(ACTION_SPECIFIC_DATE, getUpcoming);
+    actionMap.set(ACTION_UPCOMING, getUpcoming);
 
     assistant.handleRequest(actionMap);
 
