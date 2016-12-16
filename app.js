@@ -41,10 +41,21 @@ app.post('/', function(req, res) {
     }
 
     function getUpcoming() {
-        assistant.ask(`<speak>Sorry this isn't working right now, check back soon.</speak>`, NO_INPUT_PROMPTS);
-        return;
         pnet.shows.upcoming({}, function(err, data) {
-            assistant.tell('upcoming');
+            if (!data || !data.length > 0){
+              assistant.ask(`<speak>No Phish shows scheduled.</speak>`, NO_INPUT_PROMPTS);
+              return;
+            }
+            var speak = [];
+
+            if (data.length === 1){
+              speak.push(`The only show scheduled is on ${data[0].showdate} at ${data[0].venuename} in ${data[0].city}, ${data[0].state}.`);
+            }else{
+              speak.push(`Here are the next ${data.length} shows. On`);
+
+              speak.concat(data.map(show => `${show.showdate} at ${show.venuename} in ${show.city}, ${show].state}.`));
+            }
+            assistant.tell('<speak>' + speak.join(', <break time="250ms />"') + '</speak>');
             //assistant.ask(`<speak>The last show was at ${info.venue} on ${info.date}. ${info.setlist}</speak>`, NO_INPUT_PROMPTS);
         });
     }
