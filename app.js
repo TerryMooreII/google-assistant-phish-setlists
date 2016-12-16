@@ -53,7 +53,8 @@ app.post('/', function(req, res) {
             }else{
               speak.push(`Here are the next ${data.length} shows. On`);
 
-              speak.concat(data.map(show => `${show.showdate} at ${show.venuename} in ${show.city}, ${show.state}.`));
+              data.forEach(show => speak.push(`${show.showdate} at ${show.venuename} in ${show.city}, ${show.state}.`));
+
             }
             assistant.tell('<speak>' + speak.join(', <break time="250ms />"') + '</speak>');
             //assistant.ask(`<speak>The last show was at ${info.venue} on ${info.date}. ${info.setlist}</speak>`, NO_INPUT_PROMPTS);
