@@ -51,12 +51,12 @@ app.post('/', function(req, res) {
             if (data.length === 1){
               speak.push(`The only show scheduled is on ${data[0].showdate} at ${data[0].venuename} in ${data[0].city}, ${data[0].state}.`);
             }else{
-              speak.push(`Here are the next ${data.length} shows. On`);
+              speak.push(`Here are the next ${data.length} shows. The next show is on`);
 
               data.forEach(show => speak.push(`${show.showdate} at ${show.venuename} in ${show.city}, ${show.state}.`));
 
             }
-            assistant.tell('<speak>' + speak.join(', <break time="250ms />"') + '</speak>');
+            assistant.tell('<speak>' + speak.join(', <break time="500ms />"') + '</speak>');
             //assistant.ask(`<speak>The last show was at ${info.venue} on ${info.date}. ${info.setlist}</speak>`, NO_INPUT_PROMPTS);
         });
     }
