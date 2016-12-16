@@ -6,7 +6,7 @@ const Assistant = require('actions-on-google').ApiAiAssistant;
 const express = require('express');
 const bodyParser = require('body-parser');
 const Taboot = require('taboot');
-const PHISH_NET_API_KEY = config.phishApiKey;
+const PHISH_NET_API_KEY = process.env.PHISHNET_API_KEY || config.phishApiKey;
 const pnet = new Taboot(PHISH_NET_API_KEY).pnet
 
 //Actions list;
