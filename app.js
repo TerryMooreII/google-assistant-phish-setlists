@@ -48,7 +48,7 @@ app.post('/', (req, res) => {
     function getUpcoming() {
         pnet.shows.upcoming({}, (err, data) => {
             if (!data || !data.length > 0) {
-                assistant.ask(`<speak>No Phish shows scheduled.</speak>`, NO_INPUT_PROMPTS);
+                assistant.say(`<speak>No Phish shows scheduled.</speak>`, NO_INPUT_PROMPTS);
                 return;
             }
             var speak = [];
@@ -59,14 +59,14 @@ app.post('/', (req, res) => {
                 speak.push(`Here are the next ${data.length} shows. The next show is on`);
                 data.forEach(show => speak.push(`${show.showdate} at ${show.venuename} in ${show.city}, ${show.state}.`));
             }
-            assistant.ask('<speak>' + speak.join(', <break time="500ms />"') + '</speak>', NO_INPUT_PROMPTS);
+            assistant.say('<speak>' + speak.join(', <break time="500ms />"') + '</speak>', NO_INPUT_PROMPTS);
         });
     }
 
     function getLatest() {
         pnet.shows.setlists.latest({}, (err, data) => {
             var info = parseSetlist(data[0]);
-            assistant.ask(`<speak>The last show was at ${info.venue} on ${info.date}. ${info.setlist}</speak>`, NO_INPUT_PROMPTS);
+            assistant.say(`<speak>The last show was at ${info.venue} on ${info.date}. ${info.setlist}</speak>`, NO_INPUT_PROMPTS);
         });
     }
 
@@ -78,9 +78,9 @@ app.post('/', (req, res) => {
         }, (err, data) => {
             if (data && data.length > 0) {
                 var info = parseSetlist(data[0]);
-                assistant.ask(`<speak>On ${info.date} Phish played at ${info.venue}. The setlist was, ${info.setlist}</speak>`, NO_INPUT_PROMPTS);
+                assistant.say(`<speak>On ${info.date} Phish played at ${info.venue}. The setlist was, ${info.setlist}</speak>`, NO_INPUT_PROMPTS);
             } else {
-                assistant.ask(`<speak>There wasn\'t as show on ${date}</speak>`, NO_INPUT_PROMPTS);
+                assistant.say(`<speak>There wasn\'t as show on ${date}</speak>`, NO_INPUT_PROMPTS);
             }
         });
     }
